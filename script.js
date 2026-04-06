@@ -11,11 +11,29 @@ let answered = false;
 let score = 0;
 let total = 0;
 
+let wordProgress = 0;
+
 function updateUI() {
   let percent = total === 0 ? 0 : Math.round((score / total) * 100);
 
   document.getElementById("score").textContent = score + " aciertos";
   document.getElementById("percent").textContent = percent + "%";
+}
+
+function renderDots() {
+  let container = document.getElementById("dots");
+  container.innerHTML = "";
+
+  for (let i = 0; i < 5; i++) {
+    let dot = document.createElement("div");
+    dot.className = "dot";
+
+    if (i < wordProgress) {
+      dot.classList.add("active");
+    }
+
+    container.appendChild(dot);
+  }
 }
 
 function shuffle(arr) {
@@ -36,10 +54,11 @@ function getOptions(correct) {
 function loadQuestion() {
   answered = false;
 
-  current = Math.floor(Math.random() * data.length);
   let q = data[current];
 
   document.getElementById("word").textContent = q.word;
+
+  renderDots();
 
   let container = document.getElementById("options");
   container.innerHTML = "";
@@ -75,12 +94,28 @@ function checkAnswer(button, selected) {
 
   if (selected === correct) {
     score++;
+    wordProgress++;
   }
 
   updateUI();
+  renderDots();
 
-  setTimeout(loadQuestion, 900);
+  if (wordProgress >= 5) {
+    setTimeout(() => {
+      document.getElementById("word").textContent = "";
+      document.getElementById("options").innerHTML = "";
+      document.getElementById("dots").innerHTML = "";
+    }, 800);
+
+    return;
+  }
+
+  setTimeout(() => {
+    current = Math.floor(Math.random() * data.length);
+    loadQuestion();
+  }, 900);
 }
 
 loadQuestion();
 updateUI();
+renderDots();
