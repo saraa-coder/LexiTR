@@ -9,17 +9,19 @@ const allData = [...data];
 
 let current = null;
 let locked = false;
-let score = 0; // Ahora representará palabras terminadas
+let score = 0; 
 let progress = {};
 let nextLocked = false;
 
 function updateUI() {
   let totalWords = allData.length;
-  // El porcentaje ahora se basa en cuántas palabras de la lista total has completado
   let percent = Math.round((score / totalWords) * 100);
 
-  document.getElementById("score").textContent = score + " palabras completadas";
-  document.getElementById("percent").textContent = percent + "%";
+  // Marcador en turco: "X tamamlanan"
+  document.getElementById("score").textContent = score + " tamamlanan";
+  
+  // Formato turco para porcentaje: % delante del número
+  document.getElementById("percent").textContent = "%" + percent;
 }
 
 function renderDots(word) {
@@ -56,8 +58,8 @@ function pickWord() {
 
 function loadQuestion() {
   if (data.length === 0) {
-    document.getElementById("word").textContent = "¡ESTUDIO COMPLETADO!";
-    document.getElementById("options").innerHTML = "<p>Has dominado todo el vocabulario.</p>";
+    document.getElementById("word").textContent = "TEBRİKLER!"; 
+    document.getElementById("options").innerHTML = "<p>Bütün kelimeleri öğrendiniz.</p>";
     document.getElementById("dots").innerHTML = "";
     return;
   }
@@ -65,6 +67,7 @@ function loadQuestion() {
   locked = false;
   current = pickWord();
 
+  // Se muestra solo la palabra (sin etiquetas de título/número)
   document.getElementById("word").textContent = current.word;
   renderDots(current.word);
 
@@ -97,14 +100,12 @@ function handleAnswer(opt, btn) {
     progress[word]++;
     btn.classList.add("correct");
     
-    // CAMBIO AQUÍ: Solo sumamos al score general cuando se completan los 5 puntos
+    // Suma 1 al contador solo al completar los 5 aciertos
     if (progress[word] === 5) {
       score++;
     }
   } else {
     btn.classList.add("wrong");
-    // Opcional: penalizar bajando un punto de progreso si falla
-    // if (progress[word] > 0) progress[word]--; 
   }
 
   updateUI();
