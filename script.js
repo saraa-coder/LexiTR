@@ -25,26 +25,26 @@ function renderDots(word) {
   let p = progress[word] || 0;
 
   for (let i = 0; i < 5; i++) {
-    let dot = document.createElement("div");
-    dot.className = "dot";
-    if (i < p) dot.classList.add("active");
-    container.appendChild(dot);
+    let d = document.createElement("div");
+    d.className = "dot";
+    if (i < p) d.classList.add("active");
+    container.appendChild(d);
   }
 }
 
 function shuffle(arr) {
-  return arr.sort(() => Math.random() - 0.5);
+  return [...arr].sort(() => Math.random() - 0.5);
 }
 
 function getOptions(correct) {
-  let opts = [correct];
+  let opts = new Set([correct]);
 
-  while (opts.length < 4) {
+  while (opts.size < 4) {
     let r = data[Math.floor(Math.random() * data.length)].correct;
-    if (!opts.includes(r)) opts.push(r);
+    opts.add(r);
   }
 
-  return shuffle(opts);
+  return shuffle([...opts]);
 }
 
 function loadQuestion() {
@@ -71,13 +71,13 @@ function loadQuestion() {
     btn.className = "option";
     btn.textContent = opt;
 
-    btn.onclick = () => checkAnswer(opt, btn);
+    btn.addEventListener("click", () => handleAnswer(opt, btn), { once: true });
 
     container.appendChild(btn);
   });
 }
 
-function checkAnswer(opt, btn) {
+function handleAnswer(opt, btn) {
   if (locked) return;
   locked = true;
 
@@ -85,6 +85,11 @@ function checkAnswer(opt, btn) {
   let correct = current.correct;
 
   if (!progress[word]) progress[word] = 0;
+
+  // marcar visual
+  document.querySelectorAll(".option").forEach(b => {
+    if (b.textContent === correct) b.classList.add("correct");
+  });
 
   if (opt === correct) {
     score++;
@@ -94,24 +99,18 @@ function checkAnswer(opt, btn) {
     btn.classList.add("wrong");
   }
 
-  document.querySelectorAll(".option").forEach(b => {
-    if (b.textContent === correct) b.classList.add("correct");
-  });
-
   updateUI();
   renderDots(word);
 
+  // eliminar palabra si completada
   if (progress[word] >= 5) {
-    setTimeout(() => {
-      data = data.filter(x => x.word !== word);
-      loadQuestion();
-    }, 300);
-    return;
+    data = data.filter(x => x.word !== word);
   }
 
+  // siguiente pregunta SIN bucles peligrosos
   setTimeout(() => {
     loadQuestion();
-  }, 500);
+  }, 350);
 }
 
 loadQuestion();
