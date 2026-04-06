@@ -9,9 +9,11 @@ let answered = false;
 let score = 0;
 let wordProgress = {};
 
+let currentItem = null;
+
 function updateUI() {
-  let totalWords = Object.keys(wordProgress).length || 1;
-  let percent = Math.round((score / (totalWords * 5)) * 100);
+  let totalCompletedWords = Object.keys(wordProgress).length || 1;
+  let percent = Math.round((score / (totalCompletedWords * 5)) * 100);
 
   document.getElementById("score").textContent = score + " aciertos";
   document.getElementById("percent").textContent = percent + "%";
@@ -46,7 +48,7 @@ function getOptions(correct) {
   return shuffle(opts);
 }
 
-function loadQuestion() {
+function nextQuestion() {
   if (data.length === 0) {
     document.getElementById("word").textContent = "¡Juego terminado!";
     document.getElementById("options").innerHTML = "";
@@ -56,35 +58,34 @@ function loadQuestion() {
 
   answered = false;
 
-  let q = data[Math.floor(Math.random() * data.length)];
-  window.currentWord = q.word;
+  currentItem = data[Math.floor(Math.random() * data.length)];
 
-  document.getElementById("word").textContent = q.word;
+  document.getElementById("word").textContent = currentItem.word;
 
-  renderDots(q.word);
+  renderDots(currentItem.word);
 
   let container = document.getElementById("options");
   container.innerHTML = "";
 
-  let options = getOptions(q.correct);
+  let options = getOptions(currentItem.correct);
 
   options.forEach(opt => {
     let btn = document.createElement("button");
     btn.textContent = opt;
     btn.className = "option";
 
-    btn.onclick = () => checkAnswer(btn, opt, q);
+    btn.onclick = () => checkAnswer(btn, opt);
 
     container.appendChild(btn);
   });
 }
 
-function checkAnswer(button, selected, q) {
+function checkAnswer(button, selected) {
   if (answered) return;
   answered = true;
 
-  let word = q.word;
-  let correct = q.correct;
+  let word = currentItem.word;
+  let correct = currentItem.correct;
 
   document.querySelectorAll(".option").forEach(btn => {
     if (btn.textContent === correct) {
@@ -105,17 +106,22 @@ function checkAnswer(button, selected, q) {
   renderDots(word);
 
   if (wordProgress[word] >= 5) {
+    wordProgress[word] = 5;
+
+    // eliminar palabra de forma segura (SIN romper flujo)
+    data = data.filter(w => w.word !== word);
+
     setTimeout(() => {
-      data = data.filter(w => w.word !== word);
-      loadQuestion();
-    }, 600);
+      nextQuestion();
+    }, 500);
+
     return;
   }
 
   setTimeout(() => {
-    loadQuestion();
+    nextQuestion();
   }, 700);
 }
 
-loadQuestion();
+nextQuestion();
 updateUI();
