@@ -5,7 +5,7 @@ let activeQueue = [];
 let current = null;
 let locked = false;
 
-const BLOCK_SIZE = 30;
+const BLOCK_SIZE = 25;
 
 let score = parseInt(localStorage.getItem('turco_score')) || 0;
 let progress = JSON.parse(localStorage.getItem('turco_progress')) || {};
