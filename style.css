@@ -1,7 +1,7 @@
 :root {
     --primary: #2c3e50;
-    --accent: #4CAF50; /* Verde estándar para aciertos y botones */
-    --pantone-blue: #3e5f8a; /* Azul Pantone 20-0158 Antique Blue */
+    --accent: #4CAF50; /* EL VERDE UNIFICADO */
+    --pantone-blue: #3e5f8a; /* Azul Pantone 20-0158 */
     --bg: #f8f9fa;
     --text: #333;
 }
@@ -35,7 +35,6 @@ body {
     letter-spacing: -2px;
 }
 
-/* CAMBIO SOLICITADO: Solo la palabra Lab en azul Pantone 20-0158 */
 .main-title span {
     color: var(--pantone-blue);
 }
@@ -46,7 +45,7 @@ body {
     font-size: 1.2rem;
     font-weight: bold;
     padding: 15px 0;
-    background-color: var(--accent);
+    background-color: var(--accent); /* USA EL VERDE UNIFICADO */
     color: white;
     border: none;
     border-radius: 50px;
@@ -84,6 +83,8 @@ body {
     font-weight: bold;
     border: none;
     cursor: pointer;
+    font-family: inherit;
+    color: var(--text);
 }
 
 .card {
@@ -103,14 +104,13 @@ body {
     font-weight: 800;
 }
 
-/* EFECTO PALABRA COMPLETADA - Sutil en Verde */
+/* EFECTO PALABRA COMPLETADA */
 #word.word-mastered {
     color: var(--accent) !important;
     transform: none !important;
-    text-shadow: none !important;
 }
 
-/* CONTENEDOR DE PUNTOS */
+/* PUNTOS */
 #dots {
     display: flex !important;
     flex-direction: row !important;
@@ -131,14 +131,8 @@ body {
     background-color: var(--accent); 
 }
 
-.dot.active.mastered {
-    background-color: var(--accent) !important;
-    transform: none !important;
-    box-shadow: none !important;
-}
-
 /* OPCIONES */
-#options {
+.options-grid {
     display: grid;
     gap: 12px;
 }
