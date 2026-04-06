@@ -6,35 +6,34 @@ let data = [
 ];
 
 let score = 0;
-let wordProgress = {};
+let progress = {};
+let current = null;
 let locked = false;
 
-let current = null;
-
 function updateUI() {
-  let words = Object.keys(wordProgress).length || 1;
-  let percent = Math.round((score / (words * 5)) * 100);
+  let wordsDone = Object.keys(progress).length || 1;
+  let percent = Math.round((score / (wordsDone * 5)) * 100);
 
   document.getElementById("score").textContent = score + " aciertos";
   document.getElementById("percent").textContent = percent + "%";
 }
 
 function renderDots(word) {
-  let progress = wordProgress[word] || 0;
-
   let container = document.getElementById("dots");
   container.innerHTML = "";
 
+  let p = progress[word] || 0;
+
   for (let i = 0; i < 5; i++) {
-    let d = document.createElement("div");
-    d.className = "dot";
-    if (i < progress) d.classList.add("active");
-    container.appendChild(d);
+    let dot = document.createElement("div");
+    dot.className = "dot";
+    if (i < p) dot.classList.add("active");
+    container.appendChild(dot);
   }
 }
 
-function shuffle(a) {
-  return a.sort(() => Math.random() - 0.5);
+function shuffle(arr) {
+  return arr.sort(() => Math.random() - 0.5);
 }
 
 function getOptions(correct) {
@@ -48,7 +47,7 @@ function getOptions(correct) {
   return shuffle(opts);
 }
 
-function load() {
+function nextQuestion() {
   if (data.length === 0) {
     document.getElementById("word").textContent = "FIN";
     document.getElementById("options").innerHTML = "";
@@ -68,17 +67,17 @@ function load() {
   container.innerHTML = "";
 
   getOptions(current.correct).forEach(opt => {
-    let b = document.createElement("button");
-    b.className = "option";
-    b.textContent = opt;
+    let btn = document.createElement("button");
+    btn.className = "option";
+    btn.textContent = opt;
 
-    b.onclick = () => check(opt, b);
+    btn.onclick = () => checkAnswer(opt, btn);
 
-    container.appendChild(b);
+    container.appendChild(btn);
   });
 }
 
-function check(opt, btn) {
+function checkAnswer(opt, btn) {
   if (locked) return;
   locked = true;
 
@@ -87,26 +86,26 @@ function check(opt, btn) {
 
   document.querySelectorAll(".option").forEach(b => {
     if (b.textContent === correct) b.classList.add("correct");
-    if (b === btn && opt !== correct) b.classList.add("wrong");
   });
 
-  if (!wordProgress[word]) wordProgress[word] = 0;
+  if (!progress[word]) progress[word] = 0;
 
   if (opt === correct) {
     score++;
-    wordProgress[word]++;
+    progress[word]++;
+  } else {
+    btn.classList.add("wrong");
   }
 
   updateUI();
   renderDots(word);
 
-  setTimeout(() => {
-    if (wordProgress[word] >= 5) {
-      data = data.filter(x => x.word !== word);
-    }
-    load();
-  }, 400);
+  if (progress[word] >= 5) {
+    data = data.filter(x => x.word !== word);
+  }
+
+  setTimeout(nextQuestion, 500);
 }
 
-load();
+nextQuestion();
 updateUI();
