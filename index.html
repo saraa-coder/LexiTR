@@ -3,34 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelime Lab - Aprende Turco</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Kelime Lab</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff;
+            font-family: sans-serif;
+        }
+
+        .logo {
+            font-size: 72px;
+            font-weight: bold;
+        }
+
+        .kelime {
+            color: #2d3e50;
+        }
+
+        .lab {
+            color: #4caf50;
+            margin-left: 5px;
+        }
+    </style>
 </head>
 <body>
 
-    <div id="start-screen" class="screen-content">
-        <h1 class="main-title">Kelime <span>Lab</span></h1>
-        <p class="subtitle">Domina las 554 palabras esenciales del turco.</p>
-        <button id="start-button" onclick="startGame()" class="primary-btn">BAŞLA</button>
+    <div class="logo">
+        <span class="kelime">Kelime</span><span class="lab">Lab</span>
     </div>
 
-    <div id="game-container" class="game-content" style="display: none;">
-        <div class="topbar">
-            <div class="stats">
-                <span id="score">0 tamamlanan</span>
-                <span id="percent">%0</span>
-            </div>
-            <button class="reset-small" onclick="resetGame()">Reiniciar</button>
-        </div>
-
-        <div class="card">
-            <h1 id="word">Cargando...</h1>
-            <div id="dots"></div>
-        </div>
-
-        <div id="options" class="options-grid"></div>
-    </div>
-
-    <script src="script.js"></script>
 </body>
 </html>
