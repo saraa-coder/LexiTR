@@ -1,4 +1,3 @@
-console.log("JS cargado una sola vez");
 let data = [
   { word: "kaplumbağa", correct: "tortuga" },
   { word: "kadın", correct: "mujer" },
@@ -26,10 +25,10 @@ function renderDots(word) {
   let p = progress[word] || 0;
 
   for (let i = 0; i < 5; i++) {
-    let dot = document.createElement("div");
-    dot.className = "dot";
-    if (i < p) dot.classList.add("active");
-    container.appendChild(dot);
+    let d = document.createElement("div");
+    d.className = "dot";
+    if (i < p) d.classList.add("active");
+    container.appendChild(d);
   }
 }
 
@@ -48,7 +47,7 @@ function getOptions(correct) {
   return shuffle(opts);
 }
 
-function load() {
+function loadQuestion() {
   if (data.length === 0) {
     document.getElementById("word").textContent = "FIN";
     document.getElementById("options").innerHTML = "";
@@ -68,17 +67,17 @@ function load() {
   container.innerHTML = "";
 
   getOptions(current.correct).forEach(opt => {
-    let b = document.createElement("button");
-    b.className = "option";
-    b.textContent = opt;
+    let btn = document.createElement("button");
+    btn.className = "option";
+    btn.textContent = opt;
 
-    b.onclick = () => check(opt, b);
+    btn.addEventListener("click", () => checkAnswer(opt, btn), { once: true });
 
-    container.appendChild(b);
+    container.appendChild(btn);
   });
 }
 
-function check(opt, btn) {
+function checkAnswer(opt, btn) {
   if (locked) return;
   locked = true;
 
@@ -107,9 +106,9 @@ function check(opt, btn) {
   }
 
   setTimeout(() => {
-  requestAnimationFrame(load);
-}, 200);;
+    loadQuestion();
+  }, 350);
 }
 
-load();
+loadQuestion();
 updateUI();
