@@ -25,10 +25,10 @@ function renderDots(word) {
   let p = progress[word] || 0;
 
   for (let i = 0; i < 5; i++) {
-    let d = document.createElement("div");
-    d.className = "dot";
-    if (i < p) d.classList.add("active");
-    container.appendChild(d);
+    let dot = document.createElement("div");
+    dot.className = "dot";
+    if (i < p) dot.classList.add("active");
+    container.appendChild(dot);
   }
 }
 
