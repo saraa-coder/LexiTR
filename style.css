@@ -1,16 +1,16 @@
 :root {
-    --turkish-red: #E30A17; 
-    --dark-bg: #121212; /* Solo para la portada */
-    --card-night: #1e1e1e; /* Solo para la portada */
+    --turkish-red: #E30A17; /* Rojo para respuestas correctas */
+    --gray-blue: #2c3e50;  /* Gris Azulado para "Kelime" */
+    --lab-green: #4caf50;  /* Verde para "Lab" */
     --white: #ffffff;
     --bg-light: #fdfdfd;
     --dark-text: #1a1a1a;
-    --gray: #eee;
+    --gray-border: #eee;
 }
 
 body {
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background-color: var(--bg-light); /* Fondo del juego claro */
+    background-color: var(--white); /* Todo el fondo blanco */
     margin: 0;
     display: flex;
     justify-content: center;
@@ -19,50 +19,53 @@ body {
     color: var(--dark-text);
 }
 
-/* --- PORTADA: OSCURA Y POTENTE --- */
+/* --- PORTADA: ESTILO ORIGINAL RESTAURADO --- */
 #start-screen {
-    background-color: var(--card-night);
-    color: white;
+    background-color: var(--white);
     padding: 60px 40px;
     border-radius: 35px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
-    border: 1px solid #2a2a2a;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.05);
     text-align: center;
     max-width: 420px;
     width: 90%;
 }
 
 #start-screen .main-title {
-    font-size: 4.2rem;
+    font-size: 4.5rem; /* Grande y bold como la primera versión */
     font-weight: 900;
-    color: #e0e0e0; /* Blanco hueso */
-    margin: 0 0 90px 0;
+    color: var(--gray-blue); /* Gris Azulado de tu imagen */
+    margin: 0 0 90px 0; /* Mucha separación */
     letter-spacing: -3px;
     text-transform: uppercase;
     line-height: 0.9;
 }
 
 #start-screen .main-title span {
-    color: #c0392b; /* Rojo elegante */
+    color: var(--lab-green); /* Verde de tu imagen */
 }
 
 #start-screen .primary-btn {
     font-size: 1.4rem;
     font-weight: bold;
     padding: 20px;
-    background: none;
-    color: #c0392b;
-    border: 2px solid #c0392b;
+    background-color: var(--gray-blue); /* Botón del color de Kelime */
+    color: white;
+    border: none;
     border-radius: 18px;
     cursor: pointer;
     width: 100%;
-    transition: all 0.3s;
+    transition: 0.2s;
+    box-shadow: 0 6px 0px rgba(0,0,0,0.1); /* Ligero efecto 3D */
 }
 
 #start-screen .primary-btn:hover {
-    background: #c0392b;
-    color: white;
-    box-shadow: 0 0 20px rgba(192, 57, 43, 0.5);
+    transform: translateY(2px);
+    box-shadow: 0 3px 0px rgba(0,0,0,0.1);
+}
+
+#start-screen .primary-btn:active {
+    transform: translateY(6px);
+    box-shadow: 0 0px 0px rgba(0,0,0,0.1);
 }
 
 /* --- JUEGO: ESTILO ORIGINAL CLARO --- */
@@ -87,7 +90,6 @@ body {
     border-radius: 50px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     font-weight: bold;
-    color: var(--dark-text);
 }
 
 #percent { color: var(--turkish-red); margin-left: 10px; }
@@ -99,45 +101,47 @@ body {
     text-align: center;
     box-shadow: 0 15px 35px rgba(0,0,0,0.07);
     margin-bottom: 30px;
-    border-top: 8px solid var(--turkish-red);
+    border-top: 8px solid var(--gray-blue); /* Detalle azul arriba */
 }
 
 #word { font-size: 3.5rem; margin: 0 0 20px 0; color: var(--dark-text); }
 
 .dot {
     width: 12px; height: 12px;
-    background: var(--gray);
+    background: #eee;
     border-radius: 50%;
     display: inline-block;
     margin: 0 6px;
 }
 
-.dot.active { background: var(--turkish-red); }
+.dot.active { background: var(--gray-blue); } /* Puntos azulados */
 
-.options-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+.options-column {
+    display: flex;
+    flex-direction: column;
     gap: 15px;
 }
 
 .option {
     background: var(--white);
-    border: 2px solid var(--gray);
-    padding: 22px 10px;
+    border: 2px solid var(--gray-border);
+    padding: 22px;
     border-radius: 20px;
     font-size: 1.15rem;
     font-weight: 500;
     color: var(--dark-text);
     cursor: pointer;
     transition: all 0.2s;
+    text-align: center;
 }
 
-.option:hover { border-color: var(--turkish-red); background-color: #fffafa; }
+.option:hover { border-color: var(--gray-blue); background-color: #fffafa; }
+
 .correct { background-color: var(--turkish-red) !important; color: white !important; border-color: var(--turkish-red) !important; }
 .wrong { background-color: var(--dark-text) !important; color: white !important; }
 
 .reset-small { background: none; border: none; color: #ccc; cursor: pointer; font-size: 0.8rem; margin-top: 20px; align-self: center; text-decoration: underline; }
 
 @media (max-width: 450px) {
-    .options-grid { grid-template-columns: 1fr; }
+    #start-screen .main-title { font-size: 3.5rem; }
 }
