@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelime Lab</title>
-    <link rel="stylesheet" href="style.css?v=3">
+    <title>Kelime Lab - Aprende Turco</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div id="start-screen" class="screen-content">
         <h1 class="main-title">Kelime <span>Lab</span></h1>
+        <p class="subtitle">Domina las 554 palabras esenciales del turco.</p>
         <button id="start-button" onclick="startGame()" class="primary-btn">BAŞLA</button>
     </div>
 
@@ -19,7 +20,7 @@
                 <span id="score">0 tamamlanan</span>
                 <span id="percent">%0</span>
             </div>
-            <button class="reset-small" onclick="resetGame()">Reiniciar progreso</button>
+            <button class="reset-small" onclick="resetGame()">Reiniciar</button>
         </div>
 
         <div class="card">
@@ -27,9 +28,9 @@
             <div id="dots"></div>
         </div>
 
-        <div id="options" class="options-vertical"></div>
+        <div id="options" class="options-grid"></div>
     </div>
 
-    <script src="script.js?v=3"></script>
+    <script src="script.js"></script>
 </body>
 </html>
