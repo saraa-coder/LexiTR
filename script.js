@@ -12,9 +12,8 @@ let score = 0;
 let wordProgress = {};
 
 function updateUI() {
-  let percent = data.length === 0
-    ? 0
-    : Math.round((score / (Object.keys(wordProgress).length * 5)) * 100);
+  let totalWords = Object.keys(wordProgress).length || 1;
+  let percent = Math.round((score / (totalWords * 5)) * 100);
 
   document.getElementById("score").textContent = score + " aciertos";
   document.getElementById("percent").textContent = percent + "%";
@@ -32,11 +31,7 @@ function renderDots() {
   for (let i = 0; i < 5; i++) {
     let dot = document.createElement("div");
     dot.className = "dot";
-
-    if (i < progress) {
-      dot.classList.add("active");
-    }
-
+    if (i < progress) dot.classList.add("active");
     container.appendChild(dot);
   }
 }
@@ -57,10 +52,16 @@ function getOptions(correct) {
 }
 
 function loadQuestion() {
-  if (data.length === 0) return;
+  if (data.length === 0) {
+    document.getElementById("word").textContent = "¡Juego terminado!";
+    document.getElementById("options").innerHTML = "";
+    document.getElementById("dots").innerHTML = "";
+    return;
+  }
 
   answered = false;
 
+  current = Math.floor(Math.random() * data.length);
   let q = data[current];
 
   document.getElementById("word").textContent = q.word;
@@ -87,8 +88,8 @@ function checkAnswer(button, selected) {
   if (answered) return;
   answered = true;
 
-  let correct = data[current].correct;
   let word = data[current].word;
+  let correct = data[current].correct;
 
   document.querySelectorAll(".option").forEach(btn => {
     if (btn.textContent === correct) {
@@ -98,9 +99,7 @@ function checkAnswer(button, selected) {
     }
   });
 
-  if (!wordProgress[word]) {
-    wordProgress[word] = 0;
-  }
+  if (!wordProgress[word]) wordProgress[word] = 0;
 
   if (selected === correct) {
     score++;
@@ -110,27 +109,18 @@ function checkAnswer(button, selected) {
   updateUI();
   renderDots();
 
-  // 🔥 si llega a 5 aciertos, eliminar palabra
+  // 🔥 SI COMPLETA 5
   if (wordProgress[word] >= 5) {
     setTimeout(() => {
-      data = data.filter(item => item.word !== word);
+      // eliminar palabra REALMENTE
+      data = data.filter(w => w.word !== word);
 
-      if (data.length === 0) {
-        document.getElementById("word").textContent = "¡Juego completado!";
-        document.getElementById("options").innerHTML = "";
-        document.getElementById("dots").innerHTML = "";
-        return;
-      }
-
-      current = Math.floor(Math.random() * data.length);
-      loadQuestion();
+      loadQuestion(); // 🔥 recalcula SIEMPRE desde array limpio
     }, 600);
-
     return;
   }
 
   setTimeout(() => {
-    current = Math.floor(Math.random() * data.length);
     loadQuestion();
   }, 700);
 }
