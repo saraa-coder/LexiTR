@@ -22,7 +22,7 @@ body {
     padding: 20px;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centra los hijos horizontalmente */
+    align-items: center;
 }
 
 .main-title {
@@ -37,19 +37,12 @@ body {
     color: var(--accent);
 }
 
-.subtitle {
-    font-size: 1.2rem;
-    color: #666;
-    margin-bottom: 40px;
-}
-
-/* BOTONES PRINCIPALES (BAŞLA y DEVAM ET) */
 .primary-btn {
-    display: block; /* Para que ocupen su propia línea */
-    width: 240px;   /* Ancho fijo para que ambos midan lo mismo y se alineen perfecto */
+    display: block;
+    width: 240px;
     font-size: 1.2rem;
     font-weight: bold;
-    padding: 15px 0; /* Padding lateral 0 porque el ancho ya es fijo */
+    padding: 15px 0;
     background-color: var(--accent);
     color: white;
     border: none;
@@ -62,14 +55,13 @@ body {
 
 .primary-btn:hover {
     transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
 }
 
 /* JUEGO */
 .game-content {
     width: 100%;
     max-width: 500px;
-    display: none; /* Se cambia a flex por JS */
+    display: none; 
     flex-direction: column;
     padding: 20px;
 }
@@ -89,8 +81,6 @@ body {
     font-weight: bold;
 }
 
-#percent { margin-left: 15px; color: var(--accent); }
-
 .card {
     background: white;
     padding: 40px 20px;
@@ -102,15 +92,18 @@ body {
 
 #word { font-size: 2.5rem; margin: 0 0 20px 0; color: var(--primary); }
 
-.dots-container {
-    display: flex;
-    justify-content: center;
+/* CONTENEDOR DE PUNTOS - Forzado horizontal */
+#dots {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
     gap: 8px;
+    margin-top: 15px;
 }
 
 .dot {
-    width: 10px; 
-    height: 10px;
+    width: 12px;
+    height: 12px;
     background: #e0e0e0;
     border-radius: 50%;
 }
@@ -132,19 +125,7 @@ body {
     cursor: pointer;
     transition: all 0.2s;
     box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-    font-family: inherit;
 }
-
-.option:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,0,0,0.05); }
 
 .correct { background-color: var(--accent) !important; color: white !important; }
 .wrong { background-color: #ff5252 !important; color: white !important; }
-
-.reset-small {
-    background: none; 
-    border: none; 
-    color: #999; 
-    cursor: pointer; 
-    font-size: 0.8rem;
-    font-family: inherit;
-}
