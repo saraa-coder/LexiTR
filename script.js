@@ -10,6 +10,7 @@ let locked = false;
 
 let score = 0;
 let progress = {};
+let nextLocked = false;
 
 function updateUI() {
   let wordsCount = Object.keys(progress).length || 1;
@@ -61,7 +62,6 @@ function loadQuestion() {
   }
 
   locked = false;
-
   current = pickWord();
 
   document.getElementById("word").textContent = current.word;
@@ -90,7 +90,7 @@ function handleAnswer(opt, btn) {
 
   if (!progress[word]) progress[word] = 0;
 
-  // pintar respuesta correcta
+  // mostrar correcta
   document.querySelectorAll(".option").forEach(b => {
     if (b.textContent === correct) b.classList.add("correct");
   });
@@ -106,14 +106,18 @@ function handleAnswer(opt, btn) {
   updateUI();
   renderDots(word);
 
-  // eliminar palabra SOLO si llega a 5
+  // eliminar palabra si llega a 5 aciertos
   if (progress[word] >= 5) {
     data = data.filter(x => x.word !== word);
   }
 
-  // siguiente pregunta controlada
+  // control de siguiente pregunta (SIN CONGELACIÓN)
+  if (nextLocked) return;
+  nextLocked = true;
+
   setTimeout(() => {
     loadQuestion();
+    nextLocked = false;
   }, 300);
 }
 
