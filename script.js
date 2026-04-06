@@ -98,7 +98,8 @@ function checkAnswer(button, selected) {
   }
 
   updateUI();
-  renderDots();
+  document.getElementById("word").textContent = q.word;
+renderDots();
 
   if (wordProgress >= 5) {
     setTimeout(() => {
