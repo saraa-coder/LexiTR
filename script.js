@@ -11,7 +11,7 @@ let answered = false;
 let score = 0;
 let total = 0;
 
-let wordProgress = 0;
+let wordProgress = {};
 
 function updateUI() {
   let percent = total === 0 ? 0 : Math.round((score / total) * 100);
