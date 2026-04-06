@@ -5,15 +5,15 @@ let data = [
   { word: "gemi", correct: "barco" }
 ];
 
-let answered = false;
 let score = 0;
 let wordProgress = {};
+let locked = false;
 
-let currentItem = null;
+let current = null;
 
 function updateUI() {
-  let totalCompletedWords = Object.keys(wordProgress).length || 1;
-  let percent = Math.round((score / (totalCompletedWords * 5)) * 100);
+  let words = Object.keys(wordProgress).length || 1;
+  let percent = Math.round((score / (words * 5)) * 100);
 
   document.getElementById("score").textContent = score + " aciertos";
   document.getElementById("percent").textContent = percent + "%";
@@ -26,15 +26,15 @@ function renderDots(word) {
   container.innerHTML = "";
 
   for (let i = 0; i < 5; i++) {
-    let dot = document.createElement("div");
-    dot.className = "dot";
-    if (i < progress) dot.classList.add("active");
-    container.appendChild(dot);
+    let d = document.createElement("div");
+    d.className = "dot";
+    if (i < progress) d.classList.add("active");
+    container.appendChild(d);
   }
 }
 
-function shuffle(arr) {
-  return arr.sort(() => Math.random() - 0.5);
+function shuffle(a) {
+  return a.sort(() => Math.random() - 0.5);
 }
 
 function getOptions(correct) {
@@ -48,56 +48,51 @@ function getOptions(correct) {
   return shuffle(opts);
 }
 
-function nextQuestion() {
+function load() {
   if (data.length === 0) {
-    document.getElementById("word").textContent = "¡Juego terminado!";
+    document.getElementById("word").textContent = "FIN";
     document.getElementById("options").innerHTML = "";
     document.getElementById("dots").innerHTML = "";
     return;
   }
 
-  answered = false;
+  locked = false;
 
-  currentItem = data[Math.floor(Math.random() * data.length)];
+  current = data[Math.floor(Math.random() * data.length)];
 
-  document.getElementById("word").textContent = currentItem.word;
+  document.getElementById("word").textContent = current.word;
 
-  renderDots(currentItem.word);
+  renderDots(current.word);
 
   let container = document.getElementById("options");
   container.innerHTML = "";
 
-  let options = getOptions(currentItem.correct);
+  getOptions(current.correct).forEach(opt => {
+    let b = document.createElement("button");
+    b.className = "option";
+    b.textContent = opt;
 
-  options.forEach(opt => {
-    let btn = document.createElement("button");
-    btn.textContent = opt;
-    btn.className = "option";
+    b.onclick = () => check(opt, b);
 
-    btn.onclick = () => checkAnswer(btn, opt);
-
-    container.appendChild(btn);
+    container.appendChild(b);
   });
 }
 
-function checkAnswer(button, selected) {
-  if (answered) return;
-  answered = true;
+function check(opt, btn) {
+  if (locked) return;
+  locked = true;
 
-  let word = currentItem.word;
-  let correct = currentItem.correct;
+  let word = current.word;
+  let correct = current.correct;
 
-  document.querySelectorAll(".option").forEach(btn => {
-    if (btn.textContent === correct) {
-      btn.classList.add("correct");
-    } else if (btn === button) {
-      btn.classList.add("wrong");
-    }
+  document.querySelectorAll(".option").forEach(b => {
+    if (b.textContent === correct) b.classList.add("correct");
+    if (b === btn && opt !== correct) b.classList.add("wrong");
   });
 
   if (!wordProgress[word]) wordProgress[word] = 0;
 
-  if (selected === correct) {
+  if (opt === correct) {
     score++;
     wordProgress[word]++;
   }
@@ -105,23 +100,13 @@ function checkAnswer(button, selected) {
   updateUI();
   renderDots(word);
 
-  if (wordProgress[word] >= 5) {
-    wordProgress[word] = 5;
-
-    // eliminar palabra de forma segura (SIN romper flujo)
-    data = data.filter(w => w.word !== word);
-
-    setTimeout(() => {
-      nextQuestion();
-    }, 500);
-
-    return;
-  }
-
   setTimeout(() => {
-    nextQuestion();
-  }, 700);
+    if (wordProgress[word] >= 5) {
+      data = data.filter(x => x.word !== word);
+    }
+    load();
+  }, 400);
 }
 
-nextQuestion();
+load();
 updateUI();
