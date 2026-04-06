@@ -1,6 +1,6 @@
 :root {
     --primary: #2c3e50;
-    --accent: #4CAF50; /* EL VERDE UNIFICADO */
+    --accent: #4CAF50; /* VERDE UNIFICADO */
     --pantone-blue: #3e5f8a; /* Azul Pantone 20-0158 */
     --bg: #f8f9fa;
     --text: #333;
@@ -45,7 +45,7 @@ body {
     font-size: 1.2rem;
     font-weight: bold;
     padding: 15px 0;
-    background-color: var(--accent); /* USA EL VERDE UNIFICADO */
+    background-color: var(--accent);
     color: white;
     border: none;
     border-radius: 50px;
@@ -147,6 +147,7 @@ body {
     transition: all 0.2s;
     box-shadow: 0 4px 6px rgba(0,0,0,0.02);
     font-family: inherit;
+    opacity: 1;
 }
 
 .correct { 
@@ -157,4 +158,18 @@ body {
 .wrong { 
     background-color: #ff5252 !important; 
     color: white !important; 
+}
+
+/* --- NUEVO: EFECTO FOCUS AL COMPLETAR 5 ESTRELLAS --- */
+
+/* Cuando se completa la palabra, las incorrectas se vuelven tenues */
+.options-grid.has-mastered .option {
+    opacity: 0.3;
+    transition: opacity 0.4s ease;
+}
+
+/* La correcta brilla con intensidad */
+.options-grid.has-mastered .option.correct {
+    opacity: 1 !important;
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.4);
 }
