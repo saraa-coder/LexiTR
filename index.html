@@ -3,34 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelime Lab - Turco</title>
+    <title>Kelime Lab</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div id="start-screen">
-        <div class="logo-container">
-            <h1>KELİME<span>LAB</span></h1>
-            <p>Laboratorio de Vocabulario Turco</p>
-        </div>
+        <h1>KELİME<span>LAB</span></h1>
         
-        <div style="display: flex; flex-direction: column; gap: 15px; align-items: center; margin-top: 20px;">
+        <div id="button-container" style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
             <button id="start-button" class="option">BAŞLA</button>
-            <button id="resume-button" class="option" style="display:none; background-color: #2ecc71; color: white;">DEVAM ET</button>
+            
+            <button id="resume-button" class="option" style="display:none;">DEVAM ET</button>
         </div>
     </div>
 
-    <div id="game-container" style="display:none; flex-direction: column; align-items: center;">
-        <div class="header" style="width: 100%; display: flex; justify-content: space-between; padding: 10px;">
+    <div id="game-container" style="display:none;">
+        <div class="header">
             <div class="stats">
                 <span id="score">0 tamamlanan</span>
                 <span id="percent">%0</span>
             </div>
-            <button onclick="window.location.reload()" class="reset-btn">Menú</button>
+            <button onclick="location.reload()" class="reset-btn">Menü</button>
         </div>
 
         <div class="card">
-            <h2 id="word">Cargando...</h2>
+            <h2 id="word"></h2>
             <div id="dots" class="dots-container"></div>
         </div>
 
