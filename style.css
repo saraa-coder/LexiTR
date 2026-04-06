@@ -1,147 +1,103 @@
 :root {
-    --turkish-red: #E30A17; /* Rojo para respuestas correctas */
-    --gray-blue: #2c3e50;  /* Gris Azulado para "Kelime" */
-    --lab-green: #4caf50;  /* Verde para "Lab" */
+    --gray-blue: #2c3e50;
+    --lab-green: #4caf50;
+    --turkish-red: #E30A17;
     --white: #ffffff;
-    --bg-light: #fdfdfd;
-    --dark-text: #1a1a1a;
-    --gray-border: #eee;
 }
 
 body {
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background-color: var(--white); /* Todo el fondo blanco */
+    font-family: 'Segoe UI', sans-serif;
+    background-color: var(--white);
     margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    color: var(--dark-text);
 }
 
-/* --- PORTADA: ESTILO ORIGINAL RESTAURADO --- */
+/* PORTADA */
 #start-screen {
-    background-color: var(--white);
-    padding: 60px 40px;
-    border-radius: 35px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.05);
     text-align: center;
-    max-width: 420px;
     width: 90%;
+    max-width: 400px;
 }
 
-#start-screen .main-title {
-    font-size: 4.5rem; /* Grande y bold como la primera versión */
+.main-title {
+    font-size: 4.5rem;
     font-weight: 900;
-    color: var(--gray-blue); /* Gris Azulado de tu imagen */
-    margin: 0 0 90px 0; /* Mucha separación */
-    letter-spacing: -3px;
+    color: var(--gray-blue);
+    margin-bottom: 60px;
     text-transform: uppercase;
-    line-height: 0.9;
 }
 
-#start-screen .main-title span {
-    color: var(--lab-green); /* Verde de tu imagen */
-}
+.main-title span { color: var(--lab-green); }
 
-#start-screen .primary-btn {
-    font-size: 1.4rem;
-    font-weight: bold;
+.primary-btn {
+    width: 100%;
     padding: 20px;
-    background-color: var(--gray-blue); /* Botón del color de Kelime */
+    font-size: 1.5rem;
+    font-weight: bold;
+    background-color: var(--gray-blue);
     color: white;
     border: none;
-    border-radius: 18px;
+    border-radius: 15px;
     cursor: pointer;
-    width: 100%;
-    transition: 0.2s;
-    box-shadow: 0 6px 0px rgba(0,0,0,0.1); /* Ligero efecto 3D */
 }
 
-#start-screen .primary-btn:hover {
-    transform: translateY(2px);
-    box-shadow: 0 3px 0px rgba(0,0,0,0.1);
-}
-
-#start-screen .primary-btn:active {
-    transform: translateY(6px);
-    box-shadow: 0 0px 0px rgba(0,0,0,0.1);
-}
-
-/* --- JUEGO: ESTILO ORIGINAL CLARO --- */
+/* JUEGO VERTICAL */
 .game-content {
-    width: 100%;
-    max-width: 480px;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
+    width: 90%;
+    max-width: 400px;
 }
 
 .topbar {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-}
-
-.stats {
-    background: var(--white);
-    padding: 12px 25px;
-    border-radius: 50px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
     font-weight: bold;
 }
 
-#percent { color: var(--turkish-red); margin-left: 10px; }
-
 .card {
-    background: var(--white);
-    padding: 60px 20px;
-    border-radius: 30px;
+    background: white;
+    padding: 50px 20px;
+    border-radius: 25px;
     text-align: center;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.07);
-    margin-bottom: 30px;
-    border-top: 8px solid var(--gray-blue); /* Detalle azul arriba */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    margin-bottom: 25px;
+    border-top: 6px solid var(--gray-blue);
 }
 
-#word { font-size: 3.5rem; margin: 0 0 20px 0; color: var(--dark-text); }
+#word { font-size: 3rem; margin: 0 0 15px 0; }
 
 .dot {
-    width: 12px; height: 12px;
+    width: 10px; height: 10px;
     background: #eee;
     border-radius: 50%;
     display: inline-block;
-    margin: 0 6px;
+    margin: 0 4px;
 }
+.dot.active { background: var(--gray-blue); }
 
-.dot.active { background: var(--gray-blue); } /* Puntos azulados */
-
-.options-column {
+/* ESTILO DE COLUMNA ÚNICA VERTICAL */
+.options-vertical {
     display: flex;
-    flex-direction: column;
-    gap: 15px;
+    flex-direction: column; /* Una debajo de otra */
+    gap: 12px;
 }
 
 .option {
-    background: var(--white);
-    border: 2px solid var(--gray-border);
-    padding: 22px;
-    border-radius: 20px;
-    font-size: 1.15rem;
-    font-weight: 500;
-    color: var(--dark-text);
+    width: 100%;
+    padding: 18px;
+    background: white;
+    border: 2px solid #eee;
+    border-radius: 15px;
+    font-size: 1.1rem;
     cursor: pointer;
-    transition: all 0.2s;
     text-align: center;
+    transition: 0.2s;
 }
 
-.option:hover { border-color: var(--gray-blue); background-color: #fffafa; }
+.correct { background-color: var(--turkish-red) !important; color: white; border-color: var(--turkish-red); }
+.wrong { background-color: #333 !important; color: white; }
 
-.correct { background-color: var(--turkish-red) !important; color: white !important; border-color: var(--turkish-red) !important; }
-.wrong { background-color: var(--dark-text) !important; color: white !important; }
-
-.reset-small { background: none; border: none; color: #ccc; cursor: pointer; font-size: 0.8rem; margin-top: 20px; align-self: center; text-decoration: underline; }
-
-@media (max-width: 450px) {
-    #start-screen .main-title { font-size: 3.5rem; }
-}
+.reset-small { background: none; border: none; color: #ccc; cursor: pointer; text-decoration: underline; margin-top: 15px; width: 100%; }
