@@ -85,8 +85,6 @@ function checkAnswer(button, selected) {
   if (answered) return;
   answered = true;
 
-  totalCheckInit();
-
   let correct = data[current].correct;
   let word = data[current].word;
 
@@ -113,22 +111,14 @@ function checkAnswer(button, selected) {
   if (wordProgress[word] >= 5) {
     setTimeout(() => {
       nextWord();
-    }, 800);
+    }, 600);
     return;
   }
 
   setTimeout(() => {
     current = Math.floor(Math.random() * data.length);
     loadQuestion();
-  }, 900);
-}
-
-// evita errores si no existía total
-function totalCheckInit() {
-  if (typeof window._total === "undefined") {
-    window._total = 0;
-  }
-  window._total++;
+  }, 700);
 }
 
 function nextWord() {
