@@ -10,14 +10,12 @@ const BLOCK_SIZE = 30;
 let score = parseInt(localStorage.getItem('turco_score')) || 0;
 let progress = JSON.parse(localStorage.getItem('turco_progress')) || {};
 
-// BAŞLA: Resetea todo y empieza
+// BAŞLA: Resetea todo y empieza directamente
 function resetAndStart() {
-    if(confirm("¿Seguro que quieres empezar de cero?")) {
-        localStorage.clear();
-        score = 0;
-        progress = {};
-        startGame();
-    }
+    localStorage.clear();
+    score = 0;
+    progress = {};
+    startGame();
 }
 
 // startGame: Oculta menú y lanza lógica
@@ -61,7 +59,7 @@ function loadQuestion() {
     }
     
     let container = document.getElementById("options");
-    if(!container) return; // Seguridad
+    if(!container) return; 
 
     container.innerHTML = "";
     [...opts].sort(() => Math.random() - 0.5).forEach(opt => {
@@ -114,16 +112,13 @@ function renderDots(word) {
     }
 }
 
-// ESTO SE EJECUTA AL CARGAR LA PÁGINA
 window.onload = () => {
     const resumeBtn = document.getElementById('resume-button');
-    
-    // Verificamos progreso en localStorage
     const savedScore = parseInt(localStorage.getItem('turco_score')) || 0;
     const savedProgress = JSON.parse(localStorage.getItem('turco_progress')) || {};
     const hasAnyProgress = savedScore > 0 || Object.keys(savedProgress).length > 0;
 
     if (hasAnyProgress && resumeBtn) {
-        resumeBtn.style.display = 'block'; // Mostrar botón verde
+        resumeBtn.style.display = 'block'; 
     }
 }
