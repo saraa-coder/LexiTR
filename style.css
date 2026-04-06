@@ -20,6 +20,9 @@ body {
 .screen-content {
     text-align: center;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra los hijos horizontalmente */
 }
 
 .main-title {
@@ -40,10 +43,13 @@ body {
     margin-bottom: 40px;
 }
 
+/* BOTONES PRINCIPALES (BAŞLA y DEVAM ET) */
 .primary-btn {
+    display: block; /* Para que ocupen su propia línea */
+    width: 240px;   /* Ancho fijo para que ambos midan lo mismo y se alineen perfecto */
     font-size: 1.2rem;
     font-weight: bold;
-    padding: 15px 50px;
+    padding: 15px 0; /* Padding lateral 0 porque el ancho ya es fijo */
     background-color: var(--accent);
     color: white;
     border: none;
@@ -51,6 +57,7 @@ body {
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
     box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+    text-align: center;
 }
 
 .primary-btn:hover {
@@ -62,6 +69,7 @@ body {
 .game-content {
     width: 100%;
     max-width: 500px;
+    display: none; /* Se cambia a flex por JS */
     flex-direction: column;
     padding: 20px;
 }
@@ -94,12 +102,17 @@ body {
 
 #word { font-size: 2.5rem; margin: 0 0 20px 0; color: var(--primary); }
 
+.dots-container {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
 .dot {
-    width: 10px; height: 10px;
+    width: 10px; 
+    height: 10px;
     background: #e0e0e0;
     border-radius: 50%;
-    display: inline-block;
-    margin: 0 4px;
 }
 
 .dot.active { background: var(--accent); }
@@ -119,6 +132,7 @@ body {
     cursor: pointer;
     transition: all 0.2s;
     box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    font-family: inherit;
 }
 
 .option:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,0,0,0.05); }
@@ -127,5 +141,10 @@ body {
 .wrong { background-color: #ff5252 !important; color: white !important; }
 
 .reset-small {
-    background: none; border: none; color: #999; cursor: pointer; font-size: 0.8rem;
+    background: none; 
+    border: none; 
+    color: #999; 
+    cursor: pointer; 
+    font-size: 0.8rem;
+    font-family: inherit;
 }
