@@ -1,13 +1,13 @@
 :root {
     --primary: #2c3e50;
-    --accent: #4CAF50; /* Este es el verde estándar que usaremos */
-    --bg: #f8f9fa;
+    --accent: #4CAF50; /* Verde estándar para acentos */
+    --bg: #f8f9fa;     /* VOLVEMOS AL GRIS CLARO PLANO */
     --text: #333;
 }
 
 body {
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background-color: var(--bg);
+    background-color: var(--bg); /* FONDO PLANO */
     color: var(--text);
     margin: 0;
     display: flex;
@@ -23,7 +23,6 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
 }
 
 .main-title {
@@ -59,7 +58,7 @@ body {
 }
 
 /* JUEGO */
-#game-container {
+.game-content {
     width: 100%;
     max-width: 500px;
     display: none; 
@@ -82,6 +81,8 @@ body {
     font-weight: bold;
     border: none;
     cursor: pointer;
+    font-family: inherit;
+    color: var(--text);
 }
 
 .card {
@@ -97,19 +98,19 @@ body {
     font-size: 2.5rem; 
     margin: 0 0 20px 0; 
     color: var(--primary);
-    /* Mantenemos la transición suave de color, pero eliminamos cambios de tamaño */
+    /* Transición suave solo de color */
     transition: color 0.4s ease;
-    font-weight: 800; /* Aseguramos que mantenga su grosor */
+    font-weight: 800;
 }
 
-/* EFECTO PALABRA COMPLETADA - Sutil en Verde */
+/* EFECTO PALABRA COMPLETADA - Sutil en Verde, sin cambiar tamaño */
 #word.word-mastered {
-    color: var(--accent) !important; /* Cambia al verde estándar */
-    transform: none !important; /* Eliminamos cualquier cambio de tamaño */
-    text-shadow: none !important; /* Eliminamos sombras extra */
+    color: var(--accent) !important; 
+    transform: none !important;
+    text-shadow: none !important;
 }
 
-/* CONTENEDOR DE PUNTOS */
+/* CONTENEDOR DE PUNTOS - Forzado horizontal */
 #dots {
     display: flex !important;
     flex-direction: row !important;
@@ -130,7 +131,7 @@ body {
     background-color: var(--accent); 
 }
 
-/* Puntos al completar - Se mantienen verdes, sin escalar */
+/* Puntos al completar - Mantener verdes y planos */
 .dot.active.mastered {
     background-color: var(--accent) !important;
     transform: none !important;
@@ -138,7 +139,7 @@ body {
 }
 
 /* OPCIONES */
-#options {
+.options-grid {
     display: grid;
     gap: 12px;
 }
