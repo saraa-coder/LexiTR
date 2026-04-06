@@ -106,7 +106,9 @@ function check(opt, btn) {
     data = data.filter(x => x.word !== word);
   }
 
-  setTimeout(load, 500);
+  setTimeout(() => {
+  requestAnimationFrame(load);
+}, 200);;
 }
 
 load();
