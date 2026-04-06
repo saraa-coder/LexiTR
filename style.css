@@ -1,20 +1,13 @@
 :root {
-    /* Nueva Paleta de Colores Refrescada */
-    --primary-dark: #2c3e50; /* Azul oscuro para texto base */
-    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Título Principal */
-    --accent: #2ecc71; /* Verde esmeralda vibrante para acentos y correctos */
-    --bg-gradient: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%); /* Fondo suave pastel */
-    --text: #333333;
-    --card-bg: rgba(255, 255, 255, 0.95); /* Blanco translúcido para tarjetas */
-    --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.08); /* Sombra flotante suave */
-    --shadow-accent: 0 5px 15px rgba(46, 204, 113, 0.3); /* Sombra para elementos verdes */
+    --primary: #2c3e50;
+    --accent: #4CAF50; /* Este es el verde estándar que usaremos */
+    --bg: #f8f9fa;
+    --text: #333;
 }
 
 body {
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    /* CAMBIO: Fondo con degradado suave */
-    background-image: var(--bg-gradient);
-    background-attachment: fixed; /* Mantiene el degradado fijo al hacer scroll */
+    background-color: var(--bg);
     color: var(--text);
     margin: 0;
     display: flex;
@@ -26,51 +19,43 @@ body {
 /* PORTADA */
 .screen-content {
     text-align: center;
-    padding: 30px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 25px;
-    background: var(--card-bg);
-    border-radius: 30px;
-    box-shadow: var(--shadow-soft);
-    max-width: 400px;
+    gap: 20px;
 }
 
 .main-title {
     font-size: 4rem;
     font-weight: 800;
+    color: var(--primary);
     margin: 0;
-    letter-spacing: -3px;
-    /* CAMBIO: Título con degradado */
-    background: var(--primary-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    letter-spacing: -2px;
+}
+
+.main-title span {
+    color: var(--accent);
 }
 
 .primary-btn {
     display: block;
-    width: 260px;
+    width: 240px;
     font-size: 1.2rem;
     font-weight: bold;
-    padding: 18px 0;
-    /* CAMBIO: Color de botón más vibrante y sombra */
+    padding: 15px 0;
     background-color: var(--accent);
     color: white;
     border: none;
     border-radius: 50px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: var(--shadow-accent);
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
     text-align: center;
-    text-transform: uppercase; /* Botones en mayúsculas para más fuerza */
-    letter-spacing: 1px;
 }
 
 .primary-btn:hover {
-    transform: translateY(-3px); /* Levanta el botón */
-    box-shadow: 0 8px 20px rgba(46, 204, 113, 0.5); /* Sombra más fuerte */
+    transform: scale(1.05);
 }
 
 /* JUEGO */
@@ -86,49 +71,42 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 
 .stats {
-    background: var(--card-bg);
-    padding: 12px 25px;
-    border-radius: 25px;
-    box-shadow: var(--shadow-soft);
+    background: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     font-weight: bold;
     border: none;
     cursor: pointer;
-    transition: all 0.2s ease;
-    color: var(--primary-dark);
-}
-
-.stats:hover {
-    background: white;
-    transform: translateY(-2px);
 }
 
 .card {
-    background: var(--card-bg);
-    padding: 50px 30px;
-    border-radius: 30px;
+    background: white;
+    padding: 40px 20px;
+    border-radius: 24px;
     text-align: center;
-    box-shadow: var(--shadow-soft);
-    margin-bottom: 35px;
-    border: 1px solid rgba(255,255,255,0.3); /* Borde sutil para resaltar */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
 }
 
 #word { 
-    font-size: 3rem; /* Ligeramente más grande */
-    margin: 0 0 15px 0; 
-    color: var(--primary-dark);
+    font-size: 2.5rem; 
+    margin: 0 0 20px 0; 
+    color: var(--primary);
+    /* Mantenemos la transición suave de color, pero eliminamos cambios de tamaño */
     transition: color 0.4s ease;
-    font-weight: 800;
-    letter-spacing: -1px;
+    font-weight: 800; /* Aseguramos que mantenga su grosor */
 }
 
-/* EFECTO PALABRA COMPLETADA - Verde vibrante */
+/* EFECTO PALABRA COMPLETADA - Sutil en Verde */
 #word.word-mastered {
-    color: var(--accent) !important; 
-    transform: none !important;
+    color: var(--accent) !important; /* Cambia al verde estándar */
+    transform: none !important; /* Eliminamos cualquier cambio de tamaño */
+    text-shadow: none !important; /* Eliminamos sombras extra */
 }
 
 /* CONTENEDOR DE PUNTOS */
@@ -136,60 +114,46 @@ body {
     display: flex !important;
     flex-direction: row !important;
     justify-content: center !important;
-    gap: 10px;
-    margin-top: 20px;
+    gap: 8px;
+    margin-top: 15px;
 }
 
 .dot {
-    width: 14px; /* Un poco más grandes */
-    height: 14px;
-    background: rgba(0, 0, 0, 0.1); /* Gris muy suave */
+    width: 12px;
+    height: 12px;
+    background: #e0e0e0;
     border-radius: 50%;
     transition: background 0.3s ease;
 }
 
 .dot.active { 
     background-color: var(--accent); 
-    box-shadow: 0 0 5px rgba(46, 204, 113, 0.4);
 }
 
-/* Opciones - Rejilla */
+/* Puntos al completar - Se mantienen verdes, sin escalar */
+.dot.active.mastered {
+    background-color: var(--accent) !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* OPCIONES */
 #options {
     display: grid;
-    gap: 15px;
+    gap: 12px;
 }
 
 .option {
-    background: var(--card-bg);
-    border: 2px solid transparent;
-    padding: 20px;
-    border-radius: 18px;
-    font-size: 1.15rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: var(--shadow-soft);
-    font-family: inherit;
-    color: var(--text);
-    font-weight: 600;
-}
-
-.option:hover {
     background: white;
-    transform: translateY(-2px);
-    border-color: rgba(46, 204, 113, 0.2); /* Borde verde muy sutil al pasar el ratón */
+    border: 2px solid transparent;
+    padding: 18px;
+    border-radius: 15px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    font-family: inherit;
 }
 
-/* ESTADOS DE RESPUESTA - Refrescados */
-.correct { 
-    background-color: var(--accent) !important; 
-    color: white !important; 
-    box-shadow: var(--shadow-accent) !important;
-    border-color: transparent !important;
-}
-
-.wrong { 
-    background-color: #ff7675 !important; /* Rojo coral más suave */
-    color: white !important; 
-    box-shadow: 0 5px 15px rgba(255, 118, 117, 0.3) !important;
-    border-color: transparent !important;
-}
+.correct { background-color: var(--accent) !important; color: white !important; }
+.wrong { background-color: #ff5252 !important; color: white !important; }
