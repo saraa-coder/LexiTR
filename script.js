@@ -5,16 +5,19 @@ let data = [
   { word: "gemi", correct: "barco" }
 ];
 
+// Mantenemos una copia constante para sacar las opciones incorrectas
+const allData = [...data];
+
 let current = null;
 let locked = false;
-
 let score = 0;
 let progress = {};
 let nextLocked = false;
 
 function updateUI() {
-  let wordsCount = Object.keys(progress).length || 1;
-  let percent = Math.round((score / (wordsCount * 5)) * 100);
+  // Calculamos el progreso basado en las palabras totales iniciales
+  let totalWords = allData.length;
+  let percent = Math.round((score / (totalWords * 5)) * 100);
 
   document.getElementById("score").textContent = score + " aciertos";
   document.getElementById("percent").textContent = percent + "%";
@@ -41,8 +44,11 @@ function shuffle(arr) {
 function getOptions(correct) {
   let opts = new Set([correct]);
 
-  while (opts.size < 4) {
-    opts.add(data[Math.floor(Math.random() * data.length)].correct);
+  // Usamos allData para que siempre haya opciones, 
+  // incluso si la palabra ya se eliminó de la lista de juego
+  while (opts.size < 4 && opts.size < allData.length) {
+    let randomIdx = Math.floor(Math.random() * allData.length);
+    opts.add(allData[randomIdx].correct);
   }
 
   return shuffle([...opts]);
@@ -55,8 +61,8 @@ function pickWord() {
 
 function loadQuestion() {
   if (data.length === 0) {
-    document.getElementById("word").textContent = "FIN";
-    document.getElementById("options").innerHTML = "";
+    document.getElementById("word").textContent = "¡COMPLETADO!";
+    document.getElementById("options").innerHTML = "<p>Has dominado todas las palabras.</p>";
     document.getElementById("dots").innerHTML = "";
     return;
   }
@@ -74,9 +80,7 @@ function loadQuestion() {
     let btn = document.createElement("button");
     btn.className = "option";
     btn.textContent = opt;
-
     btn.onclick = () => handleAnswer(opt, btn);
-
     container.appendChild(btn);
   });
 }
@@ -90,7 +94,7 @@ function handleAnswer(opt, btn) {
 
   if (!progress[word]) progress[word] = 0;
 
-  // mostrar correcta
+  // Mostrar la respuesta correcta visualmente
   document.querySelectorAll(".option").forEach(b => {
     if (b.textContent === correct) b.classList.add("correct");
   });
@@ -106,20 +110,21 @@ function handleAnswer(opt, btn) {
   updateUI();
   renderDots(word);
 
-  // eliminar palabra si llega a 5 aciertos
+  // Eliminar palabra si llega a 5 aciertos
   if (progress[word] >= 5) {
     data = data.filter(x => x.word !== word);
   }
 
-  // control de siguiente pregunta (SIN CONGELACIÓN)
+  // Control de flujo para evitar doble click o congelamiento
   if (nextLocked) return;
   nextLocked = true;
 
   setTimeout(() => {
+    nextLocked = false; // Liberamos antes de cargar la siguiente
     loadQuestion();
-    nextLocked = false;
-  }, 300);
+  }, 400); // Un pelín más de tiempo para que se vea el feedback
 }
 
+// Inicio del juego
 loadQuestion();
 updateUI();
