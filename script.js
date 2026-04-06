@@ -8,25 +8,35 @@ let data = [
 let current;
 let answered = false;
 
+let score = 0;
+let total = 0;
+
 function shuffle(arr) {
   return arr.sort(() => Math.random() - 0.5);
 }
 
+function updateUI() {
+  document.getElementById("score").textContent = score + " aciertos";
+
+  let percent = total === 0 ? 0 : Math.round((score / total) * 100);
+  document.getElementById("percent").textContent = percent + "%";
+}
+
 function getOptions(correct) {
   let opts = [correct];
+
   while (opts.length < 4) {
     let r = data[Math.floor(Math.random() * data.length)].correct;
     if (!opts.includes(r)) opts.push(r);
   }
+
   return shuffle(opts);
 }
 
 function loadQuestion() {
   answered = false;
 
-  let rand = data[Math.floor(Math.random() * data.length)];
-  current = data.indexOf(rand);
-
+  current = Math.floor(Math.random() * data.length);
   let q = data[current];
 
   document.getElementById("word").textContent = q.word;
@@ -39,7 +49,9 @@ function loadQuestion() {
     let btn = document.createElement("button");
     btn.textContent = opt;
     btn.className = "option";
+
     btn.onclick = () => checkAnswer(btn, opt);
+
     container.appendChild(btn);
   });
 }
@@ -47,6 +59,8 @@ function loadQuestion() {
 function checkAnswer(button, selected) {
   if (answered) return;
   answered = true;
+
+  total++;
 
   let correct = data[current].correct;
   let buttons = document.querySelectorAll(".option");
@@ -59,7 +73,14 @@ function checkAnswer(button, selected) {
     }
   });
 
-  setTimeout(loadQuestion, 1000);
+  if (selected === correct) {
+    score++;
+  }
+
+  updateUI();
+
+  setTimeout(loadQuestion, 900);
 }
 
 loadQuestion();
+updateUI();
