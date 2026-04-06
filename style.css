@@ -98,14 +98,14 @@ body {
     font-size: 2.5rem; 
     margin: 0 0 20px 0; 
     color: var(--primary);
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* EFECTO DORADO (MASTERY) */
-.word-mastered {
+/* EFECTO DORADO (MASTERY) - Reforzado */
+#word.word-mastered {
     color: var(--gold) !important;
-    transform: scale(1.1);
-    text-shadow: 0 0 10px rgba(241, 196, 15, 0.3);
+    transform: scale(1.2);
+    text-shadow: 0 0 15px rgba(241, 196, 15, 0.5);
 }
 
 /* CONTENEDOR DE PUNTOS */
@@ -122,15 +122,18 @@ body {
     height: 12px;
     background: #e0e0e0;
     border-radius: 50%;
-    transition: background 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.3s ease;
 }
 
-.dot.active { background: var(--accent); }
+.dot.active { 
+    background-color: var(--accent); 
+}
 
-/* Puntos en dorado al completar */
-.dot.mastered {
-    background: var(--gold) !important;
-    box-shadow: 0 0 8px var(--gold);
+/* Puntos en dorado al completar - Prioridad absoluta */
+.dot.active.mastered {
+    background-color: var(--gold) !important;
+    box-shadow: 0 0 10px var(--gold);
+    transform: scale(1.2);
 }
 
 /* OPCIONES */
