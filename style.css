@@ -1,31 +1,29 @@
-body {
-  font-family: Arial;
-  background: #f4f6f8;
-  padding: 20px;
-}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Juego vocabulario</title>
 
-.card {
-  background: white;
-  padding: 20px;
-  border-radius: 15px;
-  text-align: center;
-}
+  <link rel="stylesheet" href="style.css">
+</head>
 
-.option {
-  width: 100%;
-  padding: 15px;
-  margin: 10px 0;
-  border-radius: 10px;
-  border: none;
-  background: #e0e5ea;
-}
+<body>
 
-.option.correct {
-  background: #4CAF50;
-  color: white;
-}
+  <div class="topbar">
+    <span id="score">0 dom.</span>
+    <span id="percent">0%</span>
+  </div>
 
-.option.wrong {
-  background: #f44336;
-  color: white;
-}
+  <div class="card">
+    <p class="label">PALABRA</p>
+    <h1 id="word"></h1>
+    <div id="dots"></div>
+  </div>
+
+  <div id="options"></div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
