@@ -3,31 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelime Lab - Aprende Turco</title>
+    <title>Kelime Lab - Turco</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div id="start-screen" class="screen-content">
-        <h1 class="main-title">Kelime <span>Lab</span></h1>
-        <button id="start-button" onclick="startGame()" class="primary-btn" style="margin-top: 60px;">BAŞLA</button>
+    <div id="start-screen" class="screen">
+        <div class="logo-container">
+            <h1>KELİME<span>LAB</span></h1>
+            <p>Laboratorio de Vocabulario Turco</p>
+        </div>
+        <div class="button-group">
+            <button id="start-button" class="btn-main">BAŞLA</button>
+            <button id="resume-button" class="btn-sub" style="display:none;">DEVAM ET</button>
+        </div>
     </div>
 
-    <div id="game-container" class="game-content" style="display: none;">
-        <div class="topbar">
+    <div id="game-container" class="screen" style="display:none;">
+        <div class="header">
             <div class="stats">
                 <span id="score">0 tamamlanan</span>
                 <span id="percent">%0</span>
             </div>
-            <button class="reset-small" onclick="resetGame()">Reiniciar</button>
+            <button onclick="resetGame()" class="reset-btn">Sıfırla</button>
         </div>
 
         <div class="card">
-            <h1 id="word">Cargando...</h1>
-            <div id="dots"></div>
+            <h2 id="word">Cargando...</h2>
+            <div id="dots" class="dots-container">
+                </div>
         </div>
 
-        <div id="options" class="options-grid"></div>
+        <div id="options" class="options-grid">
+            </div>
     </div>
 
     <script src="script.js"></script>
