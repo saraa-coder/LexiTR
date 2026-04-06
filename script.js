@@ -7,12 +7,13 @@ let data = [
 
 let current = null;
 let locked = false;
+
 let score = 0;
 let progress = {};
 
 function updateUI() {
-  let words = Object.keys(progress).length || 1;
-  let percent = Math.round((score / (words * 5)) * 100);
+  let wordsCount = Object.keys(progress).length || 1;
+  let percent = Math.round((score / (wordsCount * 5)) * 100);
 
   document.getElementById("score").textContent = score + " aciertos";
   document.getElementById("percent").textContent = percent + "%";
@@ -22,13 +23,13 @@ function renderDots(word) {
   let container = document.getElementById("dots");
   container.innerHTML = "";
 
-  let p = progress[word] || 0;
+  let value = progress[word] || 0;
 
   for (let i = 0; i < 5; i++) {
-    let d = document.createElement("div");
-    d.className = "dot";
-    if (i < p) d.classList.add("active");
-    container.appendChild(d);
+    let dot = document.createElement("div");
+    dot.className = "dot";
+    if (i < value) dot.classList.add("active");
+    container.appendChild(dot);
   }
 }
 
@@ -40,11 +41,15 @@ function getOptions(correct) {
   let opts = new Set([correct]);
 
   while (opts.size < 4) {
-    let r = data[Math.floor(Math.random() * data.length)].correct;
-    opts.add(r);
+    opts.add(data[Math.floor(Math.random() * data.length)].correct);
   }
 
   return shuffle([...opts]);
+}
+
+function pickWord() {
+  if (data.length === 0) return null;
+  return data[Math.floor(Math.random() * data.length)];
 }
 
 function loadQuestion() {
@@ -57,10 +62,9 @@ function loadQuestion() {
 
   locked = false;
 
-  current = data[Math.floor(Math.random() * data.length)];
+  current = pickWord();
 
   document.getElementById("word").textContent = current.word;
-
   renderDots(current.word);
 
   let container = document.getElementById("options");
@@ -71,7 +75,7 @@ function loadQuestion() {
     btn.className = "option";
     btn.textContent = opt;
 
-    btn.addEventListener("click", () => handleAnswer(opt, btn), { once: true });
+    btn.onclick = () => handleAnswer(opt, btn);
 
     container.appendChild(btn);
   });
@@ -86,7 +90,7 @@ function handleAnswer(opt, btn) {
 
   if (!progress[word]) progress[word] = 0;
 
-  // marcar visual
+  // pintar respuesta correcta
   document.querySelectorAll(".option").forEach(b => {
     if (b.textContent === correct) b.classList.add("correct");
   });
@@ -102,15 +106,15 @@ function handleAnswer(opt, btn) {
   updateUI();
   renderDots(word);
 
-  // eliminar palabra si completada
+  // eliminar palabra SOLO si llega a 5
   if (progress[word] >= 5) {
     data = data.filter(x => x.word !== word);
   }
 
-  // siguiente pregunta SIN bucles peligrosos
+  // siguiente pregunta controlada
   setTimeout(() => {
     loadQuestion();
-  }, 350);
+  }, 300);
 }
 
 loadQuestion();
