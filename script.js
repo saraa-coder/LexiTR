@@ -94,7 +94,20 @@ function checkAnswer(button, selected) {
 
   if (selected === correct) {
     score++;
-    wordProgress++;
+    let word = data[current].word;
+
+if (!wordProgress[word]) {
+  wordProgress[word] = 0;
+}
+
+wordProgress[word]++;
+
+if (wordProgress[word] >= 5) {
+  document.getElementById("word").textContent = "";
+  document.getElementById("options").innerHTML = "";
+  document.getElementById("dots").innerHTML = "";
+  return;
+}
   }
 
   updateUI();
