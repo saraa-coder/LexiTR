@@ -5,11 +5,22 @@ let activeQueue = [];
 let current = null;
 let locked = false;
 
-const BLOCK_SIZE = 30; // Tamaño aproximado de palabras en rotación
+const BLOCK_SIZE = 30;
 
 let score = parseInt(localStorage.getItem('turco_score')) || 0;
 let progress = JSON.parse(localStorage.getItem('turco_progress')) || {};
 
+// INICIAR DE CERO
+function resetAndStart() {
+    if(confirm("¿Seguro que quieres empezar de cero? Se borrará todo tu progreso actual.")) {
+        localStorage.clear();
+        score = 0;
+        progress = {};
+        startGame();
+    }
+}
+
+// CONTINUAR O EMPEZAR
 function startGame() {
     document.getElementById('start-screen').style.display = 'none';
     document.getElementById('game-container').style.display = 'flex';
@@ -19,21 +30,22 @@ function startGame() {
 }
 
 function initBlocks() {
-    // 1. Filtrar las que aún no están terminadas
+    // Filtrar las que no han llegado a 5 aciertos
     let available = allWords.filter(item => (progress[item.word] || 0) < 5);
     
-    // 2. Mezclar aleatoriamente para que los "bloques" sean diferentes cada vez
+    // Mezclar aleatoriamente
     available.sort(() => Math.random() - 0.5);
 
-    // 3. Llenar la cola activa con las primeras 30
+    // Los primeros 30 van a la cola activa
     activeQueue = available.slice(0, BLOCK_SIZE);
     
-    // 4. El resto espera en el almacén (pool)
+    // El resto al pool
     pool = available.slice(BLOCK_SIZE);
 }
 
 function updateUI() {
-    let percent = Math.round((score / allWords.length) * 100);
+    let total = allWords.length;
+    let percent = Math.round((score / total) * 100);
     document.getElementById("score").textContent = score + " tamamlanan";
     document.getElementById("percent").textContent = "%" + percent;
 }
@@ -41,12 +53,11 @@ function updateUI() {
 function loadQuestion() {
     if (activeQueue.length === 0 && pool.length === 0) {
         document.getElementById("word").textContent = "¡TEBRİKLER!";
-        document.getElementById("options").innerHTML = "<p>Has completado todos los bloques.</p>";
+        document.getElementById("options").innerHTML = "<p class='final-msg'>Has completado todos los bloques del laboratorio.</p>";
         return;
     }
 
     locked = false;
-    // Seleccionar palabra aleatoria solo del grupo activo de 30
     current = activeQueue[Math.floor(Math.random() * activeQueue.length)];
     
     document.getElementById("word").textContent = current.word;
@@ -54,7 +65,6 @@ function loadQuestion() {
 
     let opts = new Set([current.correct]);
     while(opts.size < 4) {
-        // Las opciones incorrectas pueden venir de cualquier palabra para mantener el nivel
         opts.add(allWords[Math.floor(Math.random() * allWords.length)].correct);
     }
     
@@ -84,10 +94,9 @@ function handleAnswer(opt, btn) {
         
         if (progress[word] === 5) {
             score++;
-            // Eliminar de la rotación activa
+            // Eliminar de activos
             activeQueue = activeQueue.filter(x => x.word !== word);
-            
-            // Rellenar la rotación activa con una nueva palabra del pool (si quedan)
+            // Si hay en pool, meter una nueva
             if (pool.length > 0) {
                 activeQueue.push(pool.shift());
             }
@@ -98,6 +107,7 @@ function handleAnswer(opt, btn) {
 
     localStorage.setItem('turco_score', score);
     localStorage.setItem('turco_progress', JSON.stringify(progress));
+    
     updateUI();
     renderDots(word);
 
@@ -116,15 +126,22 @@ function renderDots(word) {
 }
 
 function resetGame() {
-    if(confirm("¿Borrar todo el progreso de Kelime Lab?")) {
-        localStorage.clear();
+    if(confirm("¿Quieres volver al menú principal? No se borrará tu progreso.")) {
         location.reload();
     }
 }
 
 window.onload = () => {
-    if (score > 0) {
-        const startBtn = document.getElementById('start-button');
-        if (startBtn) startBtn.textContent = "DEVAM ET";
+    const startBtn = document.getElementById('start-button');
+    const resumeBtn = document.getElementById('resume-button');
+
+    if (startBtn) startBtn.onclick = resetAndStart;
+
+    // Si hay algo de progreso, mostrar botón de continuar
+    if (score > 0 || Object.keys(progress).length > 0) {
+        if (resumeBtn) {
+            resumeBtn.style.display = 'block';
+            resumeBtn.onclick = startGame;
+        }
     }
 }
