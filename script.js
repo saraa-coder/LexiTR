@@ -5,9 +5,7 @@ let data = [
   { word: "gemi", correct: "barco" }
 ];
 
-let current = 0;
 let answered = false;
-
 let score = 0;
 let wordProgress = {};
 
@@ -19,10 +17,7 @@ function updateUI() {
   document.getElementById("percent").textContent = percent + "%";
 }
 
-function renderDots() {
-  if (data.length === 0) return;
-
-  let word = data[current].word;
+function renderDots(word) {
   let progress = wordProgress[word] || 0;
 
   let container = document.getElementById("dots");
@@ -61,12 +56,12 @@ function loadQuestion() {
 
   answered = false;
 
-  current = Math.floor(Math.random() * data.length);
-  let q = data[current];
+  let q = data[Math.floor(Math.random() * data.length)];
+  window.currentWord = q.word;
 
   document.getElementById("word").textContent = q.word;
 
-  renderDots();
+  renderDots(q.word);
 
   let container = document.getElementById("options");
   container.innerHTML = "";
@@ -78,18 +73,18 @@ function loadQuestion() {
     btn.textContent = opt;
     btn.className = "option";
 
-    btn.onclick = () => checkAnswer(btn, opt);
+    btn.onclick = () => checkAnswer(btn, opt, q);
 
     container.appendChild(btn);
   });
 }
 
-function checkAnswer(button, selected) {
+function checkAnswer(button, selected, q) {
   if (answered) return;
   answered = true;
 
-  let word = data[current].word;
-  let correct = data[current].correct;
+  let word = q.word;
+  let correct = q.correct;
 
   document.querySelectorAll(".option").forEach(btn => {
     if (btn.textContent === correct) {
@@ -107,14 +102,13 @@ function checkAnswer(button, selected) {
   }
 
   updateUI();
-  renderDots();
+  renderDots(word);
 
   if (wordProgress[word] >= 5) {
     setTimeout(() => {
       data = data.filter(w => w.word !== word);
-      current = 0;
       loadQuestion();
-    }, 500);
+    }, 600);
     return;
   }
 
