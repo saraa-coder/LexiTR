@@ -5,29 +5,30 @@ let data = [
   { word: "gemi", correct: "barco" }
 ];
 
+let answered = false;
 let score = 0;
-let progress = {};
-let current = null;
-let locked = false;
+let wordProgress = {};
+
+let currentItem = null;
 
 function updateUI() {
-  let wordsDone = Object.keys(progress).length || 1;
-  let percent = Math.round((score / (wordsDone * 5)) * 100);
+  let totalCompletedWords = Object.keys(wordProgress).length || 1;
+  let percent = Math.round((score / (totalCompletedWords * 5)) * 100);
 
   document.getElementById("score").textContent = score + " aciertos";
   document.getElementById("percent").textContent = percent + "%";
 }
 
 function renderDots(word) {
+  let progress = wordProgress[word] || 0;
+
   let container = document.getElementById("dots");
   container.innerHTML = "";
-
-  let p = progress[word] || 0;
 
   for (let i = 0; i < 5; i++) {
     let dot = document.createElement("div");
     dot.className = "dot";
-    if (i < p) dot.classList.add("active");
+    if (i < progress) dot.classList.add("active");
     container.appendChild(dot);
   }
 }
@@ -49,62 +50,77 @@ function getOptions(correct) {
 
 function nextQuestion() {
   if (data.length === 0) {
-    document.getElementById("word").textContent = "FIN";
+    document.getElementById("word").textContent = "¡Juego terminado!";
     document.getElementById("options").innerHTML = "";
     document.getElementById("dots").innerHTML = "";
     return;
   }
 
-  locked = false;
+  answered = false;
 
-  current = data[Math.floor(Math.random() * data.length)];
+  currentItem = data[Math.floor(Math.random() * data.length)];
 
-  document.getElementById("word").textContent = current.word;
+  document.getElementById("word").textContent = currentItem.word;
 
-  renderDots(current.word);
+  renderDots(currentItem.word);
 
   let container = document.getElementById("options");
   container.innerHTML = "";
 
-  getOptions(current.correct).forEach(opt => {
-    let btn = document.createElement("button");
-    btn.className = "option";
-    btn.textContent = opt;
+  let options = getOptions(currentItem.correct);
 
-    btn.onclick = () => checkAnswer(opt, btn);
+  options.forEach(opt => {
+    let btn = document.createElement("button");
+    btn.textContent = opt;
+    btn.className = "option";
+
+    btn.onclick = () => checkAnswer(btn, opt);
 
     container.appendChild(btn);
   });
 }
 
-function checkAnswer(opt, btn) {
-  if (locked) return;
-  locked = true;
+function checkAnswer(button, selected) {
+  if (answered) return;
+  answered = true;
 
-  let word = current.word;
-  let correct = current.correct;
+  let word = currentItem.word;
+  let correct = currentItem.correct;
 
-  document.querySelectorAll(".option").forEach(b => {
-    if (b.textContent === correct) b.classList.add("correct");
+  document.querySelectorAll(".option").forEach(btn => {
+    if (btn.textContent === correct) {
+      btn.classList.add("correct");
+    } else if (btn === button) {
+      btn.classList.add("wrong");
+    }
   });
 
-  if (!progress[word]) progress[word] = 0;
+  if (!wordProgress[word]) wordProgress[word] = 0;
 
-  if (opt === correct) {
+  if (selected === correct) {
     score++;
-    progress[word]++;
-  } else {
-    btn.classList.add("wrong");
+    wordProgress[word]++;
   }
 
   updateUI();
   renderDots(word);
 
-  if (progress[word] >= 5) {
-    data = data.filter(x => x.word !== word);
+  if (wordProgress[word] >= 5) {
+    wordProgress[word] = 5;
+
+    // eliminar palabra de forma segura (SIN romper flujo)
+    data = data.filter(w => w.word !== word);
+
+    setTimeout(() => {
+      nextQuestion();
+    }, 500);
+
+    return;
   }
 
-  setTimeout(nextQuestion, 500);
+  setTimeout(() => {
+    nextQuestion();
+  }, 700);
 }
 
 nextQuestion();
