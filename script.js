@@ -9,20 +9,20 @@ let current = 0;
 let answered = false;
 
 let score = 0;
-
-// progreso por palabra
 let wordProgress = {};
 
 function updateUI() {
   let percent = data.length === 0
     ? 0
-    : Math.round((score / (data.length * 5)) * 100);
+    : Math.round((score / (Object.keys(wordProgress).length * 5)) * 100);
 
   document.getElementById("score").textContent = score + " aciertos";
   document.getElementById("percent").textContent = percent + "%";
 }
 
 function renderDots() {
+  if (data.length === 0) return;
+
   let word = data[current].word;
   let progress = wordProgress[word] || 0;
 
@@ -57,6 +57,8 @@ function getOptions(correct) {
 }
 
 function loadQuestion() {
+  if (data.length === 0) return;
+
   answered = false;
 
   let q = data[current];
@@ -108,10 +110,22 @@ function checkAnswer(button, selected) {
   updateUI();
   renderDots();
 
+  // 🔥 si llega a 5 aciertos, eliminar palabra
   if (wordProgress[word] >= 5) {
     setTimeout(() => {
-      nextWord();
+      data = data.filter(item => item.word !== word);
+
+      if (data.length === 0) {
+        document.getElementById("word").textContent = "¡Juego completado!";
+        document.getElementById("options").innerHTML = "";
+        document.getElementById("dots").innerHTML = "";
+        return;
+      }
+
+      current = Math.floor(Math.random() * data.length);
+      loadQuestion();
     }, 600);
+
     return;
   }
 
@@ -119,14 +133,6 @@ function checkAnswer(button, selected) {
     current = Math.floor(Math.random() * data.length);
     loadQuestion();
   }, 700);
-}
-
-function nextWord() {
-  document.getElementById("word").textContent = "";
-  document.getElementById("options").innerHTML = "";
-
-  current = Math.floor(Math.random() * data.length);
-  loadQuestion();
 }
 
 loadQuestion();
