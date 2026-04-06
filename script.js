@@ -26,10 +26,25 @@ function startGame() {
 }
 
 function initBlocks() {
-    let available = allWords.filter(item => (progress[item.word] || 0) < 5);
-    available.sort(() => Math.random() - 0.5);
-    activeQueue = available.slice(0, BLOCK_SIZE);
-    pool = available.slice(BLOCK_SIZE);
+    let pending = allWords.filter(item => (progress[item.word] || 0) < 5);
+    let mastered = allWords.filter(item => (progress[item.word] || 0) >= 5);
+
+    pending.sort(() => Math.random() - 0.5);
+    mastered.sort(() => Math.random() - 0.5);
+
+    let finalSelection = [];
+    
+    // Si ya dominas más de 50, inyectamos un 20% de repaso (5 palabras de 25)
+    if (score >= 50 && mastered.length > 0) {
+        finalSelection = pending.slice(0, 20).concat(mastered.slice(0, 5));
+        pool = pending.slice(20).concat(mastered.slice(5));
+    } else {
+        finalSelection = pending.slice(0, BLOCK_SIZE);
+        pool = pending.slice(BLOCK_SIZE);
+    }
+
+    activeQueue = finalSelection;
+    activeQueue.sort(() => Math.random() - 0.5); // Mezclamos el bloque
 }
 
 function updateUI() {
@@ -54,8 +69,6 @@ function loadQuestion() {
     
     wordElement.textContent = current.word;
     wordElement.classList.remove("word-mastered"); 
-    
-    // Limpiamos el efecto de aclarado de opciones
     optionsContainer.classList.remove("has-mastered");
     
     renderDots(current.word);
@@ -88,12 +101,19 @@ function handleAnswer(opt, btn) {
     });
 
     if (opt === correct) {
-        progress[word] = (progress[word] || 0) + 1;
-        if (progress[word] === 5) {
+        // Lógica de progresión: solo sumamos si no estaba ya al máximo
+        if ((progress[word] || 0) < 5) {
+            progress[word] = (progress[word] || 0) + 1;
+            if (progress[word] === 5) {
+                masteredThisTurn = true;
+                score++;
+                document.getElementById("word").classList.add("word-mastered");
+                optionsContainer.classList.add("has-mastered");
+            }
+        } else {
+            // Palabra de repaso: ya tiene 5 estrellas, mostramos efectos sin subir score
             masteredThisTurn = true;
-            score++;
             document.getElementById("word").classList.add("word-mastered");
-            // ACTIVAMOS EL EFECTO: Solo si llegamos a 5 aciertos
             optionsContainer.classList.add("has-mastered");
         }
     } else {
@@ -109,7 +129,9 @@ function handleAnswer(opt, btn) {
     const waitTime = masteredThisTurn ? 1500 : 800;
 
     setTimeout(() => {
-        if (masteredThisTurn) {
+        if (masteredThisTurn && (progress[word] || 0) === 5) {
+            // Si se acaba de completar o era repaso, la quitamos de la cola activa 
+            // para que entre una nueva del pool
             activeQueue = activeQueue.filter(x => x.word !== word);
             if (pool.length > 0) activeQueue.push(pool.shift());
         }
@@ -128,7 +150,7 @@ function renderDots(word, mastered = false) {
         let d = document.createElement("div");
         let classes = "dot";
         if (i < val) classes += " active";
-        if (mastered) classes += " mastered"; 
+        if (mastered && i < val) classes += " mastered"; 
         d.className = classes;
         container.appendChild(d);
     }
