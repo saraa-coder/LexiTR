@@ -5,21 +5,21 @@ let data = [
   { word: "gemi", correct: "barco" }
 ];
 
-let current;
+let current = 0;
 let answered = false;
 
 let score = 0;
 let total = 0;
 
-function shuffle(arr) {
-  return arr.sort(() => Math.random() - 0.5);
+function updateUI() {
+  let percent = total === 0 ? 0 : Math.round((score / total) * 100);
+
+  document.getElementById("score").textContent = score + " aciertos";
+  document.getElementById("percent").textContent = percent + "%";
 }
 
-function updateUI() {
-  document.getElementById("score").textContent = score + " aciertos";
-
-  let percent = total === 0 ? 0 : Math.round((score / total) * 100);
-  document.getElementById("percent").textContent = percent + "%";
+function shuffle(arr) {
+  return arr.sort(() => Math.random() - 0.5);
 }
 
 function getOptions(correct) {
@@ -41,9 +41,10 @@ function loadQuestion() {
 
   document.getElementById("word").textContent = q.word;
 
-  let options = getOptions(q.correct);
   let container = document.getElementById("options");
   container.innerHTML = "";
+
+  let options = getOptions(q.correct);
 
   options.forEach(opt => {
     let btn = document.createElement("button");
@@ -63,9 +64,8 @@ function checkAnswer(button, selected) {
   total++;
 
   let correct = data[current].correct;
-  let buttons = document.querySelectorAll(".option");
 
-  buttons.forEach(btn => {
+  document.querySelectorAll(".option").forEach(btn => {
     if (btn.textContent === correct) {
       btn.classList.add("correct");
     } else if (btn === button) {
