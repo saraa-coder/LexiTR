@@ -109,14 +109,12 @@ function checkAnswer(button, selected) {
   updateUI();
   renderDots();
 
-  // 🔥 SI COMPLETA 5
   if (wordProgress[word] >= 5) {
     setTimeout(() => {
-      // eliminar palabra REALMENTE
       data = data.filter(w => w.word !== word);
-
-      loadQuestion(); // 🔥 recalcula SIEMPRE desde array limpio
-    }, 600);
+      current = 0;
+      loadQuestion();
+    }, 500);
     return;
   }
 
