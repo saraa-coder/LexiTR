@@ -3,33 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelime Lab</title>
+    <title>Kelime Lab - Aprende Turco</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div id="start-screen">
-        <h1>KELİME<span>LAB</span></h1>
-        
-        <div id="button-container" style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
-            <button id="start-button" class="option">BAŞLA</button>
-            
-            <button id="resume-button" class="option" style="display:none;">DEVAM ET</button>
-        </div>
+    <div id="start-screen" class="screen-content">
+        <h1 class="main-title">Kelime <span>Lab</span></h1>
+        <button id="start-button" onclick="startGame()" class="primary-btn" style="margin-top: 60px;">BAŞLA</button>
     </div>
 
-    <div id="game-container" style="display:none;">
-        <div class="header">
+    <div id="game-container" class="game-content" style="display: none;">
+        <div class="topbar">
             <div class="stats">
                 <span id="score">0 tamamlanan</span>
                 <span id="percent">%0</span>
             </div>
-            <button onclick="location.reload()" class="reset-btn">Menü</button>
+            <button class="reset-small" onclick="resetGame()">Reiniciar</button>
         </div>
 
         <div class="card">
-            <h2 id="word"></h2>
-            <div id="dots" class="dots-container"></div>
+            <h1 id="word">Cargando...</h1>
+            <div id="dots"></div>
         </div>
 
         <div id="options" class="options-grid"></div>
