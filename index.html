@@ -10,6 +10,7 @@
             padding: 0;
             height: 100%;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             background-color: #ffffff;
@@ -19,6 +20,7 @@
         .logo {
             font-size: 72px;
             font-weight: bold;
+            margin-bottom: 40px; /* Espacio entre el logo y el botón */
         }
 
         .kelime {
@@ -29,6 +31,23 @@
             color: #4caf50;
             margin-left: 5px;
         }
+
+        .btn-empezar {
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            background-color: #4caf50;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .btn-empezar:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
@@ -36,6 +55,8 @@
     <div class="logo">
         <span class="kelime">Kelime</span><span class="lab">Lab</span>
     </div>
+
+    <a href="#empezar" class="btn-empezar">Empezar</a>
 
 </body>
 </html>
