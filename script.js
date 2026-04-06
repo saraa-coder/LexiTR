@@ -9,18 +9,23 @@ let current = 0;
 let answered = false;
 
 let score = 0;
-let total = 0;
 
+// progreso por palabra
 let wordProgress = {};
 
 function updateUI() {
-  let percent = total === 0 ? 0 : Math.round((score / total) * 100);
+  let percent = data.length === 0
+    ? 0
+    : Math.round((score / (data.length * 5)) * 100);
 
   document.getElementById("score").textContent = score + " aciertos";
   document.getElementById("percent").textContent = percent + "%";
 }
 
 function renderDots() {
+  let word = data[current].word;
+  let progress = wordProgress[word] || 0;
+
   let container = document.getElementById("dots");
   container.innerHTML = "";
 
@@ -28,7 +33,7 @@ function renderDots() {
     let dot = document.createElement("div");
     dot.className = "dot";
 
-    if (i < wordProgress) {
+    if (i < progress) {
       dot.classList.add("active");
     }
 
@@ -80,9 +85,10 @@ function checkAnswer(button, selected) {
   if (answered) return;
   answered = true;
 
-  total++;
+  totalCheckInit();
 
   let correct = data[current].correct;
+  let word = data[current].word;
 
   document.querySelectorAll(".option").forEach(btn => {
     if (btn.textContent === correct) {
@@ -92,35 +98,22 @@ function checkAnswer(button, selected) {
     }
   });
 
+  if (!wordProgress[word]) {
+    wordProgress[word] = 0;
+  }
+
   if (selected === correct) {
     score++;
-    let word = data[current].word;
-
-if (!wordProgress[word]) {
-  wordProgress[word] = 0;
-}
-
-wordProgress[word]++;
-
-if (wordProgress[word] >= 5) {
-  document.getElementById("word").textContent = "";
-  document.getElementById("options").innerHTML = "";
-  document.getElementById("dots").innerHTML = "";
-  return;
-}
+    wordProgress[word]++;
   }
 
   updateUI();
-  document.getElementById("word").textContent = q.word;
-renderDots();
+  renderDots();
 
-  if (wordProgress >= 5) {
+  if (wordProgress[word] >= 5) {
     setTimeout(() => {
-      document.getElementById("word").textContent = "";
-      document.getElementById("options").innerHTML = "";
-      document.getElementById("dots").innerHTML = "";
+      nextWord();
     }, 800);
-
     return;
   }
 
@@ -130,6 +123,21 @@ renderDots();
   }, 900);
 }
 
+// evita errores si no existía total
+function totalCheckInit() {
+  if (typeof window._total === "undefined") {
+    window._total = 0;
+  }
+  window._total++;
+}
+
+function nextWord() {
+  document.getElementById("word").textContent = "";
+  document.getElementById("options").innerHTML = "";
+
+  current = Math.floor(Math.random() * data.length);
+  loadQuestion();
+}
+
 loadQuestion();
 updateUI();
-renderDots();
