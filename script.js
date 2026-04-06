@@ -1,3 +1,4 @@
+console.log("JS cargado una sola vez");
 let data = [
   { word: "kaplumbağa", correct: "tortuga" },
   { word: "kadın", correct: "mujer" },
